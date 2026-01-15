@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Build output
+functions/lib/
+
+# Environment variables
+.env
+functions/.env
+
+# Firebase
+.firebase/
+firebase-debug.log
+firebase-debug.*.log
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
