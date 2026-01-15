@@ -29,10 +29,9 @@ async function generateSingleBabyImage(
     },
   });
 
-  const babyTerm = gender === "girl" ? "child (girl)" : "child (boy)";
-
-const prompt = isRealistic
-? `
+  const babyTerm = gender === "girl" ? "girl child" : "boy child";
+  const prompt = isRealistic
+    ? `
 Generate a realistic portrait of a ${babyTerm}, approximately 3–4 years old.
 
 INPUTS:
@@ -83,8 +82,8 @@ OUTPUT:
 One realistic photo of a normal, believable child.
 No text. No watermark.
 `
-:
-`Create a high-quality character illustration of a child (approximately 3–4 years old).
+    :
+    `Create a high-quality character illustration of a child (approximately 3–4 years old).
 
 INPUTS:
 - Image 1: Parent A (original character / manhwa-style illustration)
@@ -94,6 +93,11 @@ PRIMARY GOAL:
 Create a believable second-generation child character who clearly looks like the biological child of both parents.
 The child should feel natural and ordinary within the same world and art style as Parent A.
 Avoid idealized beauty, exaggeration, or “main character” features.
+
+IMPORTANT BALANCE RULE:
+Both parents must contribute equally to the child’s appearance,
+regardless of the child’s gender.
+Do NOT associate gender with either parent’s facial dominance.
 
 STYLE (VERY IMPORTANT):
 - Follow the EXACT art style of Image 1.
@@ -128,6 +132,35 @@ AGE RULES:
 - Slightly larger head-to-body ratio
 - Soft cheeks with minimal bone definition
 - Child-like but not baby-like
+
+GENDER PRESENTATION (IMPORTANT):
+- This is a ${babyTerm}
+- The child’s gender should be clearly recognizable at first glance,
+  but without relying on exaggerated stereotypes.
+- Use a natural combination of facial impression, hairstyle silhouette,
+  and subtle details to express gender.
+- The gender should remain identifiable even if the hairstyle changes.
+
+GENDER NUANCE:
+${gender === "girl"
+      ? `
+- Slightly softer and gentler overall impression
+- Subtle roundness in cheeks or eye expression
+- No makeup or adult femininity
+`
+      : `
+- Calm and neutral overall impression
+- Very subtle firmness in jaw or brow area
+- No exaggerated masculinity
+`
+    }
+
+HAIR GUIDELINES:
+- Choose a hairstyle appropriate for a 3–4 year old child.
+- Hairstyle does NOT need to be fixed or stereotypical.
+- Hair length, parting, or small accessories (if any) should feel natural
+  and consistent with the art style of Image 1.
+- Avoid adult hairstyles or overly decorative elements.
 
 COLOR & RENDERING:
 - Skin tone: blended naturally from both parents, adapted to the art style
