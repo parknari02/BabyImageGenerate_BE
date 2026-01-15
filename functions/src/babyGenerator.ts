@@ -22,97 +22,133 @@ async function generateSingleBabyImage(
   gender: "girl" | "boy"
 ): Promise<string> {
   const model = genAI.getGenerativeModel({
-    model: "gemini-2.5-flash-image",
+    model: "gemini-3-pro-image-preview",
     generationConfig: {
       // @ts-ignore - responseModalities는 타입 정의에 없음
       responseModalities: ["TEXT", "IMAGE"],
     },
   });
 
-  const babyTerm = gender === "girl" ? "baby girl" : "baby boy";
+  const babyTerm = gender === "girl" ? "child (girl)" : "child (boy)";
 
-  const prompt = isRealistic
-    ? `Generate a stunningly high-quality, photorealistic portrait of a cute ${babyTerm} (approx 3-4 years old).
-
-INPUTS:
-- Image 1: Parent A (Stylized/2D character)
-- Image 2: Parent B (Real person)
-
-STEP 1 - ANALYZE PARENT A (Image 1):
-Extract and translate these 2D features into realistic human equivalents:
-- Eye shape, size, and color
-- Eyebrow thickness and arch
-- Nose bridge height and tip shape
-- Jawline and face shape (round/oval/angular)
-- Hair color, texture, and style
-- Any distinctive features (dimples, moles, ear shape)
-
-STEP 2 - ANALYZE PARENT B (Image 2):
-Identify these real features:
-- Eye shape, size, double eyelid presence, and color
-- Nose shape and size
-- Lip shape and fullness
-- Face shape and cheekbone structure
-- Skin tone
-- Hair color and texture
-- Any distinctive features
-
-STEP 3 - GENETIC BLEND:
-Create the child by combining:
-- Eyes: Blend Parent A's translated eye shape + Parent B's eye features
-- Nose: Blend both, slightly favor the more prominent features
-- Face shape: Average of both parents
-- Hair: Blend color and texture naturally
-- Skin tone: Natural mix of both
-- Include at least ONE distinctive feature from EACH parent
-
-VISUALS:
-- The baby must be extremely cute and beautiful ("K-pop idol childhood" vibe).
-- Large, sparkling eyes with catchlights
-- Soft, natural skin texture with realistic lighting (studio portrait style)
-- Background: Soft blurred, warm beige/cream tone
-- Expression: Looking at camera, soft lovely smile
-
-OUTPUT:
-A single high-quality photograph where viewers can clearly identify features from both parents. No text, no split screens.`
-
-    : `Create a high-quality "Manhwa/Webtoon" style illustration of a ${babyTerm} (approx 3-4 years old).
+const prompt = isRealistic
+? `
+Generate a realistic portrait of a ${babyTerm}, approximately 3–4 years old.
 
 INPUTS:
-- Image 1: Parent A (Target Art Style Reference)
-- Image 2: Parent B (Real person to be stylized)
+- Image 1: Parent A (stylized / character image)
+- Image 2: Parent B (real human photo)
 
-STEP 1 - ANALYZE PARENT A (Image 1):
-Study and extract:
-- Art style: Line weight, coloring technique, shading method
-- Character features: Eye design, hair rendering, face proportions
-- Color palette used
-- Any signature features (eye sparkles, blush style, etc.)
+PRIMARY GOAL:
+Create a believable real child who looks like the natural biological average of both parents.
+The child must look like a real person who could exist in everyday life.
+Avoid stylization, exaggeration, or idealized beauty.
 
-STEP 2 - ANALYZE PARENT B (Image 2):
-Identify distinctive real features to preserve in stylized form:
-- Eye shape (monolid/double eyelid, round/almond)
-- Face shape and proportions
-- Nose and lip characteristics
-- Hair color and style
-- Skin tone
-- Any unique features (beauty marks, dimples, etc.)
+FACIAL STRUCTURE (VERY IMPORTANT):
+- Face shape, head size, and proportions must be the numerical middle point between Parent A and Parent B.
+- Do NOT exaggerate any single feature.
+- Overall structure must feel neutral and balanced.
 
-STEP 3 - STYLIZED GENETIC BLEND:
-- Convert Parent B's features into the EXACT art style of Image 1
-- Eyes: Combine Parent A's anime eye DESIGN with Parent B's eye SHAPE
-- Hair: Blend colors, use Parent A's rendering technique
-- Face: Mix both face shapes in 2D proportions
-- Include at least ONE recognizable trait from EACH parent
+FEATURE INHERITANCE RULES:
+- Eyes: Shape from Parent B, color/expression inspired by Parent A.
+- Nose: Simple, child-appropriate blend of both parents. No sharp or dramatic bridge.
+- Mouth: Soft, natural shape. No stylized smiles.
+- Eyebrows: Neutral thickness, average arch.
 
-VISUALS:
-- Art Style: Match Image 1's line weight, coloring, and shading EXACTLY
-- Big expressive eyes with style-appropriate sparkles
-- Cute, charming expression with slight head tilt
-- Background: Simple solid or gradient matching Image 1's palette
+AGE RULES:
+- Large child-like eyes relative to face
+- Soft cheeks, but no baby exaggeration
+- Subtle bone structure only
+
+SKIN & TEXTURE:
+- Real human skin texture
+- Natural pores and softness
+- No plastic, no doll-like skin
+
+LIGHTING & CAMERA:
+- Soft, even lighting (passport or studio portrait style)
+- Neutral camera angle, eye-level
+- No dramatic shadows or cinematic lighting
+
+BACKGROUND:
+- Plain, light neutral background
+
+STRICT CONSTRAINTS:
+- No celebrity resemblance
+- No fantasy beauty
+- No stylization
+- No artistic interpretation
 
 OUTPUT:
-A single character illustration where the child is clearly "from this art style's world" but obviously inherits features from both parents. No photorealism, no text.`;
+One realistic photo of a normal, believable child.
+No text. No watermark.
+`
+:
+`Create a high-quality character illustration of a child (approximately 3–4 years old).
+
+INPUTS:
+- Image 1: Parent A (original character / manhwa-style illustration)
+- Image 2: Parent B (real human photo)
+
+PRIMARY GOAL:
+Create a believable second-generation child character who clearly looks like the biological child of both parents.
+The child should feel natural and ordinary within the same world and art style as Parent A.
+Avoid idealized beauty, exaggeration, or “main character” features.
+
+STYLE (VERY IMPORTANT):
+- Follow the EXACT art style of Image 1.
+- Preserve line thickness, coloring method, shading, and eye rendering.
+- Do NOT introduce new stylistic elements.
+- Image 1 defines all visual and stylistic rules.
+
+CHARACTER TRANSLATION:
+- Convert Parent B’s real human features into the art style of Image 1.
+- Maintain facial proportions, eye spacing, nose size, and mouth shape from Parent B.
+- No photorealistic textures.
+
+FACIAL STRUCTURE:
+- Face shape and proportions must be the visual average of Parent A and Parent B.
+- Avoid sharp V-lines, extreme roundness, or exaggerated features.
+- Keep the face balanced and neutral.
+
+FEATURE INHERITANCE RULES:
+- Eyes:
+  - Use Parent A’s eye design (style, highlights, lashes)
+  - Apply Parent B’s eye shape, spacing, and tilt
+- Nose:
+  - Simple, child-appropriate blend of both parents
+- Mouth:
+  - Soft, neutral shape
+  - No exaggerated expressions
+- Eyebrows:
+  - Natural thickness and arch, consistent with Image 1 style
+
+AGE RULES:
+- Age: 3–4 years old
+- Slightly larger head-to-body ratio
+- Soft cheeks with minimal bone definition
+- Child-like but not baby-like
+
+COLOR & RENDERING:
+- Skin tone: blended naturally from both parents, adapted to the art style
+- No excessive blush, glow, or lighting effects
+
+BACKGROUND:
+- Simple solid color or soft gradient
+- No props, no environment details
+
+STRICT CONSTRAINTS:
+- No photorealism
+- No fantasy elements
+- No celebrity resemblance
+- No dramatic lighting
+- No text or watermark
+
+OUTPUT:
+A single character illustration of a child who clearly resembles both parents
+and fits naturally within the same world and art style as Image 1.
+`
+
 
   const result = await model.generateContent([
     prompt,
